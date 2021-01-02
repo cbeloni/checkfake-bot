@@ -1,12 +1,14 @@
 package br.com.checkfakebot.job;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import br.com.checkfakebot.services.TwitterServices;
 
 @Component
+@EnableScheduling
 public class TwitterJob {
 	
 	private static final int FIVE_MINUTES = 5 * 60 * 1000;
