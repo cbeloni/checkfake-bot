@@ -32,15 +32,7 @@ public class TwitterServices {
     }
 
     public String getMentions(){
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey(oauthProperties.getConsumerkey())
-                .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
-                .setOAuthAccessToken(oauthProperties.getAccesstoken())
-                .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+    	Twitter twitter = twitterInstance();
         try {
             User user = twitter.verifyCredentials();
             List<Status> statuses = twitter.getMentionsTimeline();
@@ -76,15 +68,7 @@ public class TwitterServices {
     }
 
     public List<String> getSearch(String hashtag){
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-	        .setOAuthConsumerKey(oauthProperties.getConsumerkey())
-	        .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
-	        .setOAuthAccessToken(oauthProperties.getAccesstoken())
-	        .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+    	Twitter twitter = twitterInstance();
         try {
             User user = twitter.verifyCredentials();
             //List<Status> statuses = twitter.getMentionsTimeline();
@@ -123,15 +107,7 @@ public class TwitterServices {
     }
 
     public String tweet(String mensagem){
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-	        .setOAuthConsumerKey(oauthProperties.getConsumerkey())
-	        .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
-	        .setOAuthAccessToken(oauthProperties.getAccesstoken())
-	        .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+    	Twitter twitter = twitterInstance();
         try {
             User user = twitter.verifyCredentials();
             //List<Status> statuses = twitter.getMentionsTimeline();
@@ -152,15 +128,7 @@ public class TwitterServices {
     }
 
     public String replyTweet(String mensagem){
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-	      .setOAuthConsumerKey(oauthProperties.getConsumerkey())
-	      .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
-	      .setOAuthAccessToken(oauthProperties.getAccesstoken())
-	      .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+    	Twitter twitter = twitterInstance();
         try {
             User user = twitter.verifyCredentials();
             List<Status> statuses = twitter.getMentionsTimeline();
@@ -189,15 +157,7 @@ public class TwitterServices {
     public String getCoutries(){
         try {
 
-            ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setDebugEnabled(true)
-              .setOAuthConsumerKey(oauthProperties.getConsumerkey())
-	  	      .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
-	  	      .setOAuthAccessToken(oauthProperties.getAccesstoken())
-	  	      .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
-
-            TwitterFactory tf = new TwitterFactory(cb.build());
-            Twitter twitter = tf.getInstance();
+            Twitter twitter = twitterInstance();
             //Twitter twitter = new TwitterFactory().getInstance();
             ResponseList<Location> locations;
             locations = twitter.getAvailableTrends();
@@ -213,4 +173,17 @@ public class TwitterServices {
         }
         return "falha";
     }
+
+	private Twitter twitterInstance() {
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+		  .setOAuthConsumerKey(oauthProperties.getConsumerkey())
+		  .setOAuthConsumerSecret(oauthProperties.getConsumersecret())
+		  .setOAuthAccessToken(oauthProperties.getAccesstoken())
+		  .setOAuthAccessTokenSecret(oauthProperties.getAccesstokensecret());
+
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		Twitter twitter = tf.getInstance();
+		return twitter;
+	}
 }
