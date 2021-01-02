@@ -20,16 +20,6 @@ public class TwitterResource {
 	@Autowired
 	private TwitterServices twitterServices;
 	
-	@GetMapping("/teste")
-	public ResponseEntity<String> getTeste() {
-		RestTemplate restTemplate = new RestTemplate();
-		String fooResourceUrl
-		  = "https://checkfake-service.herokuapp.com/listar";
-		ResponseEntity<String> response  = restTemplate.getForEntity(fooResourceUrl, String.class);
-		return ResponseEntity.ok(response.getStatusCode().toString());
-		
-	}
-
 	@GetMapping
 	public ResponseEntity<String> getMentions(){
 		String resultado = twitterServices.getMentions(); 
@@ -52,6 +42,13 @@ public class TwitterResource {
 	@PostMapping("/retweet/{mensagem}")
 	public ResponseEntity<String> retweet(@PathVariable("mensagem") String mensagem){
 		String resultado = twitterServices.replyTweet(mensagem);
+
+		return ResponseEntity.ok(resultado);
+	}
+	
+	@PostMapping("/retweet/job")
+	public ResponseEntity<String> retweet(){
+		String resultado = twitterServices.replyTweetLastFiveminutes();
 
 		return ResponseEntity.ok(resultado);
 	}

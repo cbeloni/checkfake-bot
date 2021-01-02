@@ -2,6 +2,7 @@ package br.com.checkfakebot.services;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class TwitterServices {
 	
 	@Autowired
 	private OauthProperties oauthProperties;
+	
+	private static final int FIVE_MINUTES = 5 * 60 * 1000;
     
     public String getTrends(){
 
@@ -152,6 +155,42 @@ public class TwitterServices {
         }
         
         return "sucesso";
+    }
+    
+    public String replyTweetLastFiveminutes(){
+    	
+    	Twitter twitter = twitterInstance();
+    	String mensagem = "Processando";
+    	String mensagemRetorno = "";
+        try {
+            User user = twitter.verifyCredentials();
+            List<Status> statuses = twitter.getMentionsTimeline();
+            
+            //List<Status> statuses = twitter.getHomeTimeline();
+            System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
+            
+            
+            Status ultimaMentionStatus = statuses.stream().findFirst().get();
+            System.out.println("Tweet: " + ultimaMentionStatus.getText());
+            mensagemRetorno = "Bot em construção!";
+            StatusUpdate stat= new StatusUpdate(mensagemRetorno);
+            stat.setInReplyToStatusId(ultimaMentionStatus.getId());
+            
+            Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
+            if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
+            	twitter.updateStatus(stat);
+            }
+            
+            mensagem = "Mensagem respondida: " + ultimaMentionStatus.getText() +
+            		  " resposta: " + mensagemRetorno ;
+
+        } catch (TwitterException te) {
+            te.printStackTrace();
+            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.exit(-1);
+        }
+        
+        return mensagem;
     }
 
     public String getCoutries(){
