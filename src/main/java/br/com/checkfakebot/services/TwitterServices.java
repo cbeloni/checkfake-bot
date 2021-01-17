@@ -144,7 +144,7 @@ public class TwitterServices {
             System.out.println("Tweet: " + ultimaMentionStatus.getText());
 
             StatusUpdate stat= new StatusUpdate(mensagem);
-            stat.setInReplyToStatusId(ultimaMentionStatus.getId());
+            stat.setInReplyToStatusId(ultimaMentionStatus.getInReplyToUserId());
 
             twitter.updateStatus(stat);
 
@@ -173,13 +173,14 @@ public class TwitterServices {
             Status ultimaMentionStatus = statuses.stream().findFirst().get();
             System.out.println("Tweet: " + ultimaMentionStatus.getText());
             mensagemRetorno = "Bot em construção!";
-            StatusUpdate stat= new StatusUpdate(mensagemRetorno);
+            StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + " " + mensagemRetorno);
             stat.setInReplyToStatusId(ultimaMentionStatus.getId());
             
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
             if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
-            	twitter.updateStatus(stat);
+            	String a = "1";        
             }
+            twitter.updateStatus(stat);
             
             mensagem = "Mensagem respondida: " + ultimaMentionStatus.getText() +
             		  " resposta: " + mensagemRetorno ;
@@ -187,7 +188,6 @@ public class TwitterServices {
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
-            System.exit(-1);
         }
         
         return mensagem;
