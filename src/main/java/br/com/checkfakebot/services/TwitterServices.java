@@ -178,9 +178,8 @@ public class TwitterServices {
             
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
             if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
-            	String a = "1";        
+                twitter.updateStatus(stat);
             }
-            twitter.updateStatus(stat);
             
             mensagem = "Mensagem respondida: " + ultimaMentionStatus.getText() +
             		  " resposta: " + mensagemRetorno ;
