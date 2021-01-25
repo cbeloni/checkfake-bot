@@ -173,7 +173,8 @@ public class TwitterServices {
             Status ultimaMentionStatus = statuses.stream().findFirst().get();
             System.out.println("Tweet: " + ultimaMentionStatus.getText());
             mensagemRetorno = "Bot em construção!";
-            StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + " " + mensagemRetorno);
+            StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + 
+                                                " " + mensagemRetorno);
             stat.setInReplyToStatusId(ultimaMentionStatus.getId());
             
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
