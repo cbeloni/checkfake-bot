@@ -112,7 +112,7 @@ public class TwitterServices {
     public String tweet(String mensagem){
     	Twitter twitter = twitterInstance();
         try {
-            User user = twitter.verifyCredentials();
+            //User user = twitter.verifyCredentials();
             //List<Status> statuses = twitter.getMentionsTimeline();
             //List<Status> statuses = twitter.getHomeTimeline();
             //System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
