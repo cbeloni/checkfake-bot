@@ -118,7 +118,7 @@ public class TwitterServices {
             //System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
             
             Status status = twitter.updateStatus(mensagem);
-            System.out.println("Successfully updated the status to [" + status.getText() + "].");
+            System.out.println("Atualizado com sucesso [" + status.getText() + "].");
             return status.getText();
 
         } catch (TwitterException te) {
