@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.checkfakebot.config.OauthProperties;
+import br.com.checkfakebot.dto.MemeDTO;
+import br.com.checkfakebot.util.RestUtils;
+import net.bytebuddy.asm.Advice.This;
 import twitter4j.Location;
 import twitter4j.MediaEntity;
 import twitter4j.Query;
@@ -26,6 +29,9 @@ public class TwitterServices {
 	
 	@Autowired
 	private OauthProperties oauthProperties;
+	
+	@Autowired
+	private RestUtils restUtils;
 	
 	private static final int FIVE_MINUTES = 5 * 60 * 1000;
     
@@ -173,12 +179,19 @@ public class TwitterServices {
             Status ultimaMentionStatus = statuses.stream().findFirst().get();
             System.out.println("Tweet: " + ultimaMentionStatus.getText());
             mensagemRetorno = "Bot em construção!";
-            StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + 
-                                                " " + mensagemRetorno);
-            stat.setInReplyToStatusId(ultimaMentionStatus.getId());
+            
             
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
             if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
+            	MediaEntity[] mediaEntities = ultimaMentionStatus.getMediaEntities();
+            	byte[] imageByte = this.restUtils.getImageBytes(mediaEntities[0].getMediaURL());
+            	String nomeImagem = this.restUtils.getNomeByUrl(mediaEntities[0].getMediaURL());
+            	MemeDTO memeDTO = this.restUtils.salvarMeme(imageByte,nomeImagem);
+            	mensagemRetorno = "Não tenho certeza, na dúvida, não acredite. Imagem salva: " + memeDTO.getId();
+            	StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + 
+                        " " + mensagemRetorno);
+            	stat.setInReplyToStatusId(ultimaMentionStatus.getId());
+
                 twitter.updateStatus(stat);
             }
             

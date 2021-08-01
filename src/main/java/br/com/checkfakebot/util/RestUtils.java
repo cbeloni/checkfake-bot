@@ -30,7 +30,18 @@ public class RestUtils {
 		return memeDTO.getBody();
 	}
 	
-	MemeDTO salvarMeme(byte[] arquivo, String nome) {
+	public byte[] getImageBytes(String url) {
+		byte[] imageByte = restTemplate.getForObject(url, byte[].class);
+		return imageByte;
+	}
+	
+	public String getNomeByUrl(String url) {
+		String[] urlArray = url.split("/");
+		String lastPath = urlArray[urlArray.length-1];
+		return lastPath;
+	}
+	
+	public MemeDTO salvarMeme(byte[] arquivo, String nome) {
 
 		String serverUrl = appProperties.getUrlservice() + "/salvar?nome=" + nome;
 
