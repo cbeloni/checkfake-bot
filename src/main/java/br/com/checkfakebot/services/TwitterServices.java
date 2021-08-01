@@ -179,17 +179,19 @@ public class TwitterServices {
             Status ultimaMentionStatus = statuses.stream().findFirst().get();
             System.out.println("Tweet: " + ultimaMentionStatus.getText());
             mensagemRetorno = "Bot em construção!";
-            
-            
+                        
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
             if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
-            	MediaEntity[] mediaEntities = ultimaMentionStatus.getMediaEntities();
+            	System.out.println("Obtendo imagems");
+            	MediaEntity[] mediaEntities = ultimaMentionStatus.getMediaEntities();            	
             	byte[] imageByte = this.restUtils.getImageBytes(mediaEntities[0].getMediaURL());
+            	System.out.println("Salvando meme");
             	String nomeImagem = this.restUtils.getNomeByUrl(mediaEntities[0].getMediaURL());
             	MemeDTO memeDTO = this.restUtils.salvarMeme(imageByte,nomeImagem);
             	mensagemRetorno = "Não tenho certeza, na dúvida, não acredite. Imagem salva: " + memeDTO.getId();
             	StatusUpdate stat= new StatusUpdate(" @" + ultimaMentionStatus.getUser().getScreenName() + 
                         " " + mensagemRetorno);
+            	System.out.println("Atualizando status, mensagem: " + mensagemRetorno);
             	stat.setInReplyToStatusId(ultimaMentionStatus.getId());
 
                 twitter.updateStatus(stat);
