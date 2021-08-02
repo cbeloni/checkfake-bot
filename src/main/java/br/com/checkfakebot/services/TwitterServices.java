@@ -35,11 +35,6 @@ public class TwitterServices {
 	
 	private static final int FIVE_MINUTES = 5 * 60 * 1000;
     
-    public String getTrends(){
-
-        return "sucesso";
-    }
-
     public String getMentions(){
     	Twitter twitter = twitterInstance();
         try {
@@ -206,26 +201,6 @@ public class TwitterServices {
         }
         
         return mensagem;
-    }
-
-    public String getCoutries(){
-        try {
-
-            Twitter twitter = twitterInstance();
-            //Twitter twitter = new TwitterFactory().getInstance();
-            ResponseList<Location> locations;
-            locations = twitter.getAvailableTrends();
-            System.out.println("Showing available trends");
-            for (Location location : locations) {
-                System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");
-            }
-            return "Sucesso";
-        } catch (TwitterException te) {
-            te.printStackTrace();
-            System.out.println("Failed to get trends: " + te.getMessage());
-            System.exit(-1);
-        }
-        return "falha";
     }
 
 	private Twitter twitterInstance() {
