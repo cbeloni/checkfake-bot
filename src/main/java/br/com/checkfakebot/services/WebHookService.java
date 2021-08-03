@@ -1,7 +1,6 @@
 package br.com.checkfakebot.services;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,10 @@ public class WebHookService {
 		String json = new ObjectMapper().writeValueAsString(body);
 
 		log.info("Objeto recebido: " + json);
+	}
+	
+	public void getWebHook() {
+		log.info("Feito Get no webhook " );
 	}
 	
 
