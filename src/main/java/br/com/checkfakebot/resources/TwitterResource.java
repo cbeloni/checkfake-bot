@@ -1,5 +1,6 @@
 package br.com.checkfakebot.resources;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import br.com.checkfakebot.services.TwitterServices;
+import br.com.checkfakebot.services.WebHookService;
 
 @RestController
 @RequestMapping(value = "twitter")
@@ -18,6 +24,9 @@ public class TwitterResource {
 	
 	@Autowired
 	private TwitterServices twitterServices;
+	
+	@Autowired
+	private WebHookService webHookService;
 	
 	@GetMapping
 	public ResponseEntity<String> getMentions(){
@@ -51,4 +60,13 @@ public class TwitterResource {
 
 		return ResponseEntity.ok(resultado);
 	}
+	
+	@PostMapping("/webhook")
+	public ResponseEntity<String> webhook(@RequestBody Object body) throws JsonGenerationException, JsonMappingException, IOException{
+		webHookService.listenerWebhook(body);
+		
+		return ResponseEntity.ok("processado");
+	}
+	
+	
 }
