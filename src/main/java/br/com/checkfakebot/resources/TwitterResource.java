@@ -68,5 +68,12 @@ public class TwitterResource {
 		return ResponseEntity.ok("processado");
 	}
 	
+	@GetMapping("/webhook")
+	public ResponseEntity<String> webhook() {
+		webHookService.getWebHook();
+		
+		return ResponseEntity.ok("processado");
+	}
+	
 	
 }
