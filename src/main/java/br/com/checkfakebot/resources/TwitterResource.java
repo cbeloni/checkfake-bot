@@ -1,7 +1,10 @@
 package br.com.checkfakebot.resources;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import br.com.checkfakebot.dto.CrcTokenDTO;
 import br.com.checkfakebot.services.TwitterServices;
 import br.com.checkfakebot.services.WebHookService;
 
@@ -70,10 +74,13 @@ public class TwitterResource {
 	}
 	
 	@GetMapping("/webhook")
-	public ResponseEntity<String> webhook() {
-		webHookService.getWebHook();
+	public ResponseEntity<CrcTokenDTO> webhook(@PathParam("crc_token") String crc_token) throws UnsupportedEncodingException {
+		String crc_token_hash = webHookService.getWebHook(crc_token);
+		CrcTokenDTO crcTokenDTO = CrcTokenDTO.builder()
+											.response_token("sha256="+crc_token_hash)
+											.build();
 		
-		return ResponseEntity.ok("processado");
+		return ResponseEntity.ok(crcTokenDTO);
 	}
 	
 	
