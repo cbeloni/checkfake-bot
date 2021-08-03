@@ -170,13 +170,15 @@ public class TwitterServices {
             
             
             Status ultimaMentionStatus = statuses.stream().findFirst().get();
+            long idTRetweeted = ultimaMentionStatus.getInReplyToStatusId();
+            Status statusRetweeted = this.getTweetById(idTRetweeted);
             log.info("Tweet: " + ultimaMentionStatus.getText());
             mensagemRetorno = "Bot em construção!";
                         
             Date fiveAgo = new Date(new Date().getTime() - FIVE_MINUTES) ; 
             if (ultimaMentionStatus.getCreatedAt().after(fiveAgo)) {
             	log.info("Obtendo imagems");
-            	MediaEntity[] mediaEntities = ultimaMentionStatus.getMediaEntities();            	
+            	MediaEntity[] mediaEntities = statusRetweeted.getMediaEntities();            	
             	byte[] imageByte = this.restUtils.getImageBytes(mediaEntities[0].getMediaURL());
             	log.info("Salvando meme");
             	String nomeImagem = this.restUtils.getNomeByUrl(mediaEntities[0].getMediaURL());
@@ -199,6 +201,12 @@ public class TwitterServices {
         }
         
         return mensagem;
+    }
+    
+    private Status getTweetById (long idTweet) throws TwitterException {
+    	Twitter twitter = this.twitterInstance();
+    	Status status = twitter.showStatus(idTweet);
+    	return status;
     }
 
 	private Twitter twitterInstance() {
