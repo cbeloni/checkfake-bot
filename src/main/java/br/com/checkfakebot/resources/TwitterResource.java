@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -63,9 +64,9 @@ public class TwitterResource {
 	
 	@PostMapping("/webhook")
 	public ResponseEntity<String> webhook(@RequestBody Object body) throws JsonGenerationException, JsonMappingException, IOException{
-		webHookService.listenerWebhook(body);
+		String retorno = webHookService.listenerWebhook(body);
 		
-		return ResponseEntity.ok("processado");
+		return ResponseEntity.ok(retorno);
 	}
 	
 	@GetMapping("/webhook")

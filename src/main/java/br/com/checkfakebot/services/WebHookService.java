@@ -14,11 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebHookService {
 	
-	public void listenerWebhook(Object body) throws JsonGenerationException, JsonMappingException, IOException {
+	public String listenerWebhook(Object body) throws JsonGenerationException, JsonMappingException, IOException {
 		
 		String json = new ObjectMapper().writeValueAsString(body);
 
 		log.info("Objeto recebido: " + json);
+		return json;
 	}
 	
 	public void getWebHook() {
